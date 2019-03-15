@@ -17,7 +17,7 @@ public class Simulation {
 	public Simulation(double maxSimulationTime) {
 		clock = 0;
 		this.maxSimulationTime = maxSimulationTime;
-		rand = new RandomDistribution();
+		setRand(new RandomDistribution());
 		blockageTime = new HashMap<EventServer, Double>();
 		totalItemsComplete = new HashMap<EventServer, Integer>();
 		allEventServers = new ArrayList<EventServer>();
@@ -30,7 +30,7 @@ public class Simulation {
 	
 	public static Simulation testSimulation() {
 		Simulation retVal = new Simulation();
-		retVal.rand = new DummyRandom();
+		retVal.setRand(new DummyRandom());
 		InspectorOneCurrent a1 = new InspectorOneCurrent(retVal);
 		InspectorTwo a2 = new InspectorTwo(retVal, 2);
 		WorkStationCurrent w1 = new WorkStationCurrent(retVal, 2, 5, "Workstation 1");
@@ -49,57 +49,7 @@ public class Simulation {
 		return retVal;
 	}
 	
-	public static Simulation currentSimulation() {
-		Simulation retVal = new Simulation();
-		retVal.rand = new RandomDistribution();
-		InspectorOneCurrent a1 = new InspectorOneCurrent(retVal);
-		InspectorTwo a2 = new InspectorTwo(retVal, 2);
-		WorkStationCurrent w1 = new WorkStationCurrent(retVal, 2, 4.6044, "Workstation 1");
-		WorkStationCurrent w2 = new WorkStationCurrent(retVal, 2, 11.0926, "Workstation 2");
-		WorkStationCurrent w3 = new WorkStationCurrent(retVal, 2, 8.7956, "Workstation 3");
-		a1.addWorkStation(w1);
-		a1.addWorkStation(w2);
-		a1.addWorkStation(w3);
-		w2.addBuffer(a2.getBuffer2());
-		w3.addBuffer(a2.getBuffer3());
-		retVal.addServer(a1);
-		retVal.addServer(a2);
-		retVal.addServer(w1);
-		retVal.addServer(w2);
-		retVal.addServer(w3);
-		retVal.addBuffer("Workstation 1 Buffer", w1.getBuffer());
-		retVal.addBuffer("Workstation 2 Buffer", w2.getBuffer());
-		retVal.addBuffer("Workstation 3 Buffer", w3.getBuffer());
-		retVal.addBuffer("Inspector 2 Comp2 Buffer", a2.getBuffer2());
-		retVal.addBuffer("Inspector 2 Comp3 Buffer", a2.getBuffer3());
-		return retVal;
-	}
-	
-	public static Simulation alternativeSimulation() {
-		Simulation retVal = new Simulation();
-		retVal.rand = new RandomDistribution();
-		InspectorOneAlternative a1 = new InspectorOneAlternative(retVal, 50);
-		InspectorTwo a2 = new InspectorTwo(retVal, 50);
-		WorkStation w1 = new WorkStation(retVal, 4.6044, "Workstation 1");
-		WorkStation w2 = new WorkStation(retVal, 11.0926, "Workstation 2");
-		WorkStation w3 = new WorkStation(retVal, 8.7956, "Workstation 3");
-		w1.addBuffer(a1.getBuffer1());
-		w2.addBuffer(a1.getBuffer1());
-		w3.addBuffer(a1.getBuffer1());
-		w2.addBuffer(a2.getBuffer2());
-		w3.addBuffer(a2.getBuffer3());
-		retVal.addServer(a1);
-		retVal.addServer(a2);
-		retVal.addServer(w1);
-		retVal.addServer(w2);
-		retVal.addServer(w3);
-		retVal.addBuffer("Inspector 1 Buffer", a1.getBuffer1());
-		retVal.addBuffer("Inspector 2 Comp2 Buffer", a2.getBuffer2());
-		retVal.addBuffer("Inspector 2 Comp3 Buffer", a2.getBuffer3());
-		return retVal;
-	}
-	
-	private void addBuffer(String name, Buffer buffer) {
+	public void addBuffer(String name, Buffer buffer) {
 		allBuffers.put(name, buffer);
 	}
 
@@ -162,7 +112,7 @@ public class Simulation {
 	}
 
 	public RandomDistribution getRandom() {
-		return rand;
+		return getRand();
 	}
 
 	public void addBlockageTime(EventServer eventServer, double blockedTime) {
@@ -199,5 +149,19 @@ public class Simulation {
 			}
 			output.get(s).add(this.allBuffers.get(s).getHighWaterMark());
 		}	
+	}
+
+	/**
+	 * @return the rand
+	 */
+	public RandomDistribution getRand() {
+		return rand;
+	}
+
+	/**
+	 * @param rand the rand to set
+	 */
+	public void setRand(RandomDistribution rand) {
+		this.rand = rand;
 	}
 }

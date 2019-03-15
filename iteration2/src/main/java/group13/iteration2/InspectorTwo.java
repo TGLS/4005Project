@@ -6,10 +6,14 @@ public class InspectorTwo extends EventServer {
 	private int currentComp;
 	
 	public InspectorTwo(Simulation sim, int bufferSize, String name) {
+		this(sim, new Buffer(bufferSize), new Buffer(bufferSize), name);
+	}
+	
+	public InspectorTwo(Simulation sim, Buffer bufferComp2, Buffer bufferComp3, String name) {
 		super(name);
 		this.sim = sim;
-		bufferComp2 = new Buffer(bufferSize);
-		bufferComp3 = new Buffer(bufferSize);
+		this.bufferComp2 = bufferComp2;
+		this.bufferComp3 = bufferComp3;
 		
 		generateNextEvent();
 	}

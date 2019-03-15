@@ -11,40 +11,23 @@ import java.util.Map;
 public class App 
 {
 	
-    private static final int TOTAL_RUNS = 1000000000;
+    private static final int TOTAL_RUNS = 10000000;
 
 	public static void main( String[] args )
-    {
-		System.out.println("Default Simulation");
-		System.out.println("Property Name, Average, Standard Deviation");
-    	runDefaultSimulation();
-    	System.out.println("Alternative Simulation");
-    	runAlternativeSimulation();
+    {	
+		runSimulation("Default Simulation", new DefaultBuilder());
+		runSimulation("Alternative Simulation", new AlternativeBuilder());
+		runSimulation("Alternative 2 Simulation", new AlternativeTwoBuilder());
     }
     
-    public static void runDefaultSimulation() {
+    public static void runSimulation(String simName, SimulationBuilder builder) {
+    	System.out.println(simName);
+    	System.out.println("Property Name, Average, Standard Deviation");
     	HashMap<String, List<Double>> blockageTime = new HashMap<String, List<Double>>();
     	HashMap<String, List<Integer>> itemsComplete = new HashMap<String, List<Integer>>();
     	HashMap<String, List<Integer>> highWaterMarks = new HashMap<String, List<Integer>>();
         for (int n = 0; n < TOTAL_RUNS; n++) {
-        	Simulation sim = Simulation.currentSimulation();
-            sim.run();
-            sim.enterBlockageTime(blockageTime);
-            sim.enterItemsComplete(itemsComplete);
-            sim.enterHighWaterMarks(highWaterMarks);
-        }
-        
-        printBlockageStatisitics(blockageTime);
-        printCompleteStatisitics(itemsComplete);
-        printWatermarkStatisitics(highWaterMarks);
-    }
-
-	public static void runAlternativeSimulation() {
-    	HashMap<String, List<Double>> blockageTime = new HashMap<String, List<Double>>();
-    	HashMap<String, List<Integer>> itemsComplete = new HashMap<String, List<Integer>>();
-    	HashMap<String, List<Integer>> highWaterMarks = new HashMap<String, List<Integer>>();
-        for (int n = 0; n < TOTAL_RUNS; n++) {
-        	Simulation sim = Simulation.alternativeSimulation();
+        	Simulation sim = builder.buildSimulation();
             sim.run();
             sim.enterBlockageTime(blockageTime);
             sim.enterItemsComplete(itemsComplete);

@@ -4,9 +4,13 @@ public class InspectorOneAlternative extends EventServer {
 	private Buffer bufferComp1;
 	
 	public InspectorOneAlternative(Simulation sim, int bufferSize, String name) {
+		this(sim, new Buffer(bufferSize), name);
+	}
+	
+	public InspectorOneAlternative(Simulation sim, Buffer bufferComp1, String name) {
 		super(name);
 		this.sim = sim;
-		bufferComp1 = new Buffer(bufferSize);
+		this.bufferComp1 = bufferComp1;
 		generateNextEvent();
 	}
 	
