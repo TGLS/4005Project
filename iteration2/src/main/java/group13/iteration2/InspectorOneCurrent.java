@@ -29,6 +29,7 @@ public class InspectorOneCurrent extends EventServer {
 		blocked = (target == null);
 		
 		if (target != null) {
+			System.out.println(sim.currentTime() + ", " + "Insp1");
 			target.getBuffer().incrementBuffer();
 			sim.incrementItemsComplete(this);
 			addBlockedTime();
@@ -42,9 +43,5 @@ public class InspectorOneCurrent extends EventServer {
 	
 	private void generateNextEvent() {
 		nextEventTime = sim.currentTime() + sim.getRandom().getInsp1Time();
-	}
-	
-	public void unblockEvent() {
-		handleEvent();
 	}
 }

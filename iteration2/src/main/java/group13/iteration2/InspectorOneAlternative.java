@@ -40,8 +40,4 @@ public class InspectorOneAlternative extends EventServer {
 	private void generateNextEvent() {
 		nextEventTime = sim.currentTime() + sim.getRandom().getInsp1Time();
 	}
-	
-	public void unblockEvent() {
-		handleEvent();
-	}
 }

@@ -4,7 +4,7 @@ public abstract class EventServer {
 	protected Simulation sim;
 	protected boolean blocked;
 	protected double nextEventTime;
-	private String name;
+	protected String name;
 	
 	public EventServer(String name) {
 		this.name = name;
@@ -15,7 +15,12 @@ public abstract class EventServer {
 	}
 
 	public abstract void handleEvent();
-	public abstract void unblockEvent();
+
+	public final boolean unblockEvent() {
+		handleEvent();
+		
+		return !blocked;
+	}
 	
 	public double getNextEventTime() {
 		return nextEventTime;

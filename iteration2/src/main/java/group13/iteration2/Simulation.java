@@ -15,7 +15,7 @@ public class Simulation {
 	private Map<String, Buffer> allBuffers;
 	
 	public Simulation(double maxSimulationTime) {
-		clock = 0;
+		clock = 0.0;
 		this.maxSimulationTime = maxSimulationTime;
 		setRand(new RandomDistribution());
 		blockageTime = new HashMap<EventServer, Double>();
@@ -35,7 +35,7 @@ public class Simulation {
 		InspectorTwo a2 = new InspectorTwo(retVal, 2);
 		WorkStationCurrent w1 = new WorkStationCurrent(retVal, 2, 5, "Workstation 1");
 		WorkStationCurrent w2 = new WorkStationCurrent(retVal, 2, 7, "Workstation 2");
-		WorkStationCurrent w3 = new WorkStationCurrent(retVal, 2, 9, "Workstation 3");
+		WorkStationCurrent w3 = new WorkStationCurrent(retVal, 2, 20, "Workstation 3");
 		a1.addWorkStation(w1);
 		a1.addWorkStation(w2);
 		a1.addWorkStation(w3);
@@ -46,6 +46,7 @@ public class Simulation {
 		retVal.addServer(w1);
 		retVal.addServer(w2);
 		retVal.addServer(w3);
+		retVal.maxSimulationTime = 60;
 		return retVal;
 	}
 	
@@ -98,9 +99,15 @@ public class Simulation {
 		nextEventTarget.handleEvent();
 		
 		// Then handle any events that may have been unblocked.
-		for (EventServer s : allEventServers) {
-			if (s.nextEventBlocked()) {
-				s.unblockEvent();
+		boolean noChange = false;
+		while (!noChange) {
+			noChange = true;
+			for (EventServer s : allEventServers) {
+				if (s.nextEventBlocked()) {
+					if (s.unblockEvent()) {
+						noChange = false;
+					}
+				}
 			}
 		}
 		
