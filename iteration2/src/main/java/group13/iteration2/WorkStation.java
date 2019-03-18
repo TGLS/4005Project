@@ -28,7 +28,6 @@ public class WorkStation extends EventServer {
 				return;
 			}
 		}
-		System.out.println(sim.currentTime() + ", " + name);
 		constructing = true;
 		addBlockedTime();
 		for (Buffer b : watchBuffers) {

@@ -36,7 +36,6 @@ public class InspectorTwo extends EventServer {
 				blocked = true;
 			} else {
 				blocked = false;
-				System.out.println(sim.currentTime() + ", " + "Insp22");
 				bufferComp2.incrementBuffer();
 			}
 		} else {
@@ -44,7 +43,6 @@ public class InspectorTwo extends EventServer {
 				blocked = true;
 			} else {
 				blocked = false;
-				System.out.println(sim.currentTime() + ", " + "Insp23");
 				bufferComp3.incrementBuffer();
 			}
 		}
